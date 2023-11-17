@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PostScreen extends StatelessWidget {
   // This widget is the root of your application.
@@ -9,7 +10,7 @@ class PostScreen extends StatelessWidget {
   String comments = "2";
   String shares = "3";
   String imageURL = 'assets/content.jpeg';
-  PostScreen({super.key, required this.username, required this.caption});
+  PostScreen({super.key, required this.username, required this.caption, required this.timeAgo, required this.like, required this.comments, required this.shares});
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +20,25 @@ class PostScreen extends StatelessWidget {
       caption: this.caption,
       timeAgo: this.timeAgo,
       imageURL: this.imageURL,
+      like: this.like,
+      comments: this.comments,
+      shares: this.shares
     );
   }
 }
 
 class PostScreenPage extends StatefulWidget {
-  String username, caption, timeAgo, userImage, imageURL;
+  String username, caption, timeAgo, userImage, imageURL, like, comments, shares;
   PostScreenPage(
       {super.key,
       required this.userImage,
       required this.username,
       required this.timeAgo,
       required this.caption,
-      required this.imageURL});
+      required this.imageURL,
+      required this.like,
+      required this.comments,
+      required this.shares});
   @override
   _PostScreenState createState() => _PostScreenState();
 }
@@ -64,9 +71,10 @@ class _PostScreenState extends State<PostScreenPage> {
             widget.imageURL != null
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Image.network(widget.imageURL),
+                    child: Image.asset(widget.imageURL),
                   )
                 : const SizedBox.shrink(),
+            _PostFooter()
           ],
         ),
       ),
@@ -165,6 +173,46 @@ class _AvatarImage extends StatelessWidget {
           ),
         )
       ]),
+    );
+  }
+}
+
+class _PostFooter extends StatelessWidget {
+  final String like = "1";
+  final String comments = "2";
+  final String shares = "3";
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround, // Dàn trải các cột
+        children: [
+          buildFooterColumn(FontAwesomeIcons.thumbsUp, "Thích", "$like lượt thích"),
+          buildFooterColumn(FontAwesomeIcons.comment, "Bình luận", "$comments bình luận"),
+          buildFooterColumn(FontAwesomeIcons.paperPlane, "Chia sẻ", "$shares lượt chia sẻ"),
+        ],
+      ),
+    );
+  }
+
+  Column buildFooterColumn(IconData icon, String label, String value) {
+    return Column(
+      children: [
+        Padding(padding: EdgeInsets.only(bottom: 5),
+        child: Text(value)
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: Icon(icon),
+            ),
+            Text(label),
+          ],
+        ),
+      ],
     );
   }
 }
