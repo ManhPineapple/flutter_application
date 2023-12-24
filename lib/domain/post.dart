@@ -1,10 +1,10 @@
-
 import 'dart:io';
 
 class Post {
   final String id;
   final String name;
   final List<ImageInfo> images;
+  final VideoInfo video;
   final String described;
   final String created;
   final String feel;
@@ -16,10 +16,14 @@ class Post {
   final String state;
   final Author author;
 
+  late int kudos;
+  late int disappointed;
+
   Post({
     required this.id,
     required this.name,
     required this.images,
+    required this.video,
     required this.described,
     required this.created,
     required this.feel,
@@ -33,13 +37,16 @@ class Post {
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
+    var id = json['id'] ?? '';
+
     return Post(
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       images: (json['image'] as List<dynamic>?)
-          ?.map((imageJson) => ImageInfo.fromJson(imageJson))
-          .toList() ??
+              ?.map((imageJson) => ImageInfo.fromJson(imageJson))
+              .toList() ??
           [],
+      video: VideoInfo.fromJson(json['video'] ?? {}),
       described: json['described'] ?? '',
       created: json['created'] ?? '',
       feel: json['feel'] ?? '',
@@ -89,6 +96,16 @@ class ImageInfo {
   }
 }
 
+class VideoInfo {
+  final String url;
+
+  VideoInfo({required this.url});
+
+  factory VideoInfo.fromJson(Map<String, dynamic> json) {
+    return VideoInfo(url: json['url'] ?? '');
+  }
+}
+
 class Author {
   final String id;
   final String name;
@@ -109,7 +126,7 @@ class Author {
   }
 }
 
-class PostCreate{
+class PostCreate {
   final List<File>? image;
   final File? video;
   final String? described;
@@ -166,5 +183,4 @@ class PostEdit{
     };
   }
 }
-
 
