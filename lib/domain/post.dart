@@ -1,8 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter_application/application/comment_service.dart';
-import 'package:flutter_application/domain/comment.dart';
-
 class Post {
   final String id;
   final String name;
@@ -18,7 +15,6 @@ class Post {
   final String banned;
   final String state;
   final Author author;
-  late List<Comment> comments = [];
 
   late int kudos;
   late int disappointed;
@@ -80,26 +76,6 @@ class Post {
       'state': state,
       'author': author,
     };
-  }
-
-  Future<void> addMark(
-    CommentService service,
-    String id_bai_viet,
-    String noi_dung,
-  ) async {
-    List<Comment> newComments = await service.addMark(id_bai_viet, noi_dung);
-    this.comments = newComments;
-  }
-
-  Future<void> addComment(
-    CommentService service,
-    String id_bai_viet,
-    String id_mark,
-    String noi_dung,
-  ) async {
-    List<Comment> newComments =
-        await service.addComment(id_bai_viet, id_mark, noi_dung);
-    this.comments = newComments;
   }
 }
 
@@ -176,7 +152,7 @@ class PostCreate {
   }
 }
 
-class PostEdit {
+class PostEdit{
   final String id;
   final List<File>? image;
   final File? video;
